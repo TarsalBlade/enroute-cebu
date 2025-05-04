@@ -327,18 +327,18 @@ Final Notes:
 - If a user asks for a route not listed, suggest the closest possible jeepney codes and transfer points.
 - Prioritize ease of navigation for tourists and newcomers to Cebu City.`;
 ;
-  
+
   try {
     responseDiv.textContent = "Dian is thinking...";
 
     const aiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer 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",
+        "Authorization": "Bearer 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",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-prover-v2:free",
+        model: "nvidia/llama-3.3-nemotron-super-49b-v1:free",
         messages: [
           {
             role: "user",
