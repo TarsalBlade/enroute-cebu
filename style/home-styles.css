@@ -167,6 +167,14 @@
     color: #181818;
     text-decoration: none;
   }
+
+  .route-response {
+    font-size: 1em;
+    font-family: "Inter";
+    color: #181818;
+    display: flex;
+    text-align: left;
+  }
   
   /* Responsive tweaks */
   @media (max-width: 480px) {
