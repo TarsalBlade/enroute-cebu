@@ -1,133 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 * {
+  font-family: "Inter",sans-serif;  
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: #f8f8f8;
+}
+
+.app-logo {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  max-height: 4.5rem; /* Match original h1 size */
+}
+
+.headerContainer{
+  line-height: 0px;
+}
+
+.container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  align-items: center;
+  height: 100vh;
 }
 
-.login-container {
-  background-color: #fff;
+.card {
   display: flex;
-  flex-direction: row;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-radius: 12px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   padding: 40px;
-  width: 90%;
-  max-width: 800px;
-  gap: 30px;
+  gap: 40px;
+  width: clamp(320px, 80%, 700px); /* Responsive width */
+
 }
 
-.left, .right {
-  flex: 1;
+.left {
+  width: 35%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 15px;
 }
 
-.left h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0;
-}
 
-.left p {
-  margin: 6px 0 24px;
-  color: #555;
-}
-
-.auth-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f1f1f1;
-  border: none;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.1);
-}
-
-.auth-button img {
-  width: 20px;
-  margin-right: 10px;
-}
-
-.left small {
+.subtitle {
   font-size: 0.8rem;
-  color: #888;
-}
-
-.left a {
-  color: #007BFF;
-  text-decoration: none;
-}
-
-.right h2 {
-  font-size: 1.1rem;
-  font-weight: bold;
+  color: #6c757d;
+  margin: 0;
   margin-bottom: 20px;
 }
 
-.right input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
   border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-.guest-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #111;
-  color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.guest-button:hover {
-  background-color: #333;
+.light-btn {
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.25);
+  width: 100%;
 }
 
-/* Mobile Responsive Styles */
-@media screen and (max-width: 768px) {
-  .login-container {
+.dark-btn {
+  background-color: #181818;
+  color: #fff;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.info-text {
+  font-size: 12px;
+  color: gray;
+}
+
+.info-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.right {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.right h2 {
+  margin: 0 0 10px 0;
+  font-weight: bolder;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #181818;
+  border-radius: 5px;
+  width: 100%;
+}
+
+label{
+  color: #646464;
+  font-size:0.9em;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .card {
     flex-direction: column;
-    padding: 25px;
-    gap: 20px;
+    padding: 30px 20px;
+    gap: 30px;
   }
 
   .left, .right {
-    padding: 0;
+    width: 100%;
   }
 
-  .auth-button, .guest-button {
-    font-size: 1rem;
+  .left {
+    align-items: center;
+    text-align: center;
   }
-}
 
-@media screen and (max-width: 480px) {
-  .left h1 {
-    font-size: 1.6rem;
+  .btn {
+    justify-content: center;
   }
 
   .right h2 {
-    font-size: 1rem;
+    text-align: center;
+  }
+
+  .button-group {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px 15px;
+    width: 95%;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+  label {
+    font-size: 0.85em;
+  }
+
+  .right h2 {
+    font-size: 1.2em;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
   }
 }

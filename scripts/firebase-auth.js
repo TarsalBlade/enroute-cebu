@@ -1,63 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>enRoute Login</title>
-  <link rel="stylesheet" href="style/styles.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>  
-  <div class="container">
-    <div class="card">
-      <div class="left">
-        <div class="headerContainer">
-          <img alt="diantech-logo" src="assets/logo-hd.png" class="app-logo">
-          <p class="subtitle">by Diantech AI Solutions 2025</p>
-        </div>
-        <button class="btn light-btn" onclick="loginWithGoogle()">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Gmail_logo_1.png/640px-Gmail_logo_1.png" alt="gmail" class="icon" />
-          Continue with Gmail
-        </button>
-        
-        <button class="btn light-btn" onclick="signInAsGuest()">
-          <img src="https://img.icons8.com/ios-filled/24/user.png" alt="guest" class="icon" />
-          Continue as Guest
-        </button>
-        <p class="info-text">To learn more give us a <a href="#">direct email.</a></p>
-      </div>
-      <div class="right">
-        <h2>Login or Signup</h2>
-        <label>Email</label>
-        <input id="email" type="email" placeholder="Enter your email" />
-        <label>Password</label>
-        <input id="password" type="password" placeholder="Enter your password" />
-        <div class="button-group">
-          <button class="btn dark-btn" onclick="signInWithEmailPassword()">Login</button>
-          <button class="btn dark-btn" onclick="signUpWithEmailPassword()">Signup</button>
-        </div>
-        <div id="auth-error"></div>
-      </div>
-    </div>
-  </div>
-</body>
-
-<script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
   import {
     getAuth,
-    signInAnonymously,
     signInWithPopup,
     GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
+    createUserWithEmailAndPassword, // Added
+    signInWithEmailAndPassword,    // Added
   } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc
-  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"; // ✅ use v9.23.0 here too
 
   // --- Firebase Configuration ---
   const firebaseConfig = {
@@ -75,7 +24,6 @@
   const analytics = getAnalytics(app);
   const auth = getAuth(app);
   const authErrorElement = document.getElementById('auth-error');
-  const db = getFirestore(app);
 
   // --- Helper to Display Errors ---
   function displayAuthError(message) {
@@ -90,27 +38,6 @@
           authErrorElement.textContent = '';
       }
   }
-
-  window.signInAsGuest = async function () {
-  try {
-    const result = await signInAnonymously(auth);
-    const user = result.user;
-    const guestName = `Guest_${Math.floor(1000 + Math.random() * 9000)}`; // Example: Guest_1832
-
-    // Save guest username to Firestore
-    await setDoc(doc(db, "guests", user.uid), {
-      uid: user.uid,
-      guestName: guestName,
-      createdAt: new Date(),
-    });
-
-    console.log("Guest signed in with username:", guestName);
-    window.location.href = 'home.html'; // Redirect on success
-    // Redirect or update UI here
-  } catch (error) {
-    document.getElementById("auth-error").innerText = error.message;
-  }
-};
 
   // --- Google Login ---
 window.loginWithGoogle = function () {
@@ -205,5 +132,24 @@ window.loginWithGoogle = function () {
         logEvent(analytics, 'login_failure', { method: 'Email/Password', error_code: error.code, error_message: error.message });
       });
   };
-</script>
-</html>
+  
+  window.signInAsGuest = async function () {
+    try {
+      const result = await signInAnonymously(auth);
+  
+      const user = result.user;
+      const guestName = `Guest_${Math.floor(1000 + Math.random() * 9000)}`; // Example: Guest_1832
+  
+      // Save guest username to Firestore
+      await setDoc(doc(db, "guests", user.uid), {
+        uid: user.uid,
+        guestName: guestName,
+        createdAt: new Date(),
+      });
+  
+      console.log("Guest signed in with username:", guestName);
+      // Redirect or update UI here
+    } catch (error) {
+      document.getElementById("auth-error").innerText = error.message;
+    }
+  };
