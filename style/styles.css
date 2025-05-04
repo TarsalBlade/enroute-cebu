@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-container {
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 40px;
+  width: 90%;
+  max-width: 800px;
+  gap: 30px;
+}
+
+.left, .right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.left h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.left p {
+  margin: 6px 0 24px;
+  color: #555;
+}
+
+.auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+}
+
+.auth-button img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.left small {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.left a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.right h2 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.right input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.guest-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #111;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.guest-button:hover {
+  background-color: #333;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    padding: 25px;
+    gap: 20px;
+  }
+
+  .left, .right {
+    padding: 0;
+  }
+
+  .auth-button, .guest-button {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .left h1 {
+    font-size: 1.6rem;
+  }
+
+  .right h2 {
+    font-size: 1rem;
+  }
+}

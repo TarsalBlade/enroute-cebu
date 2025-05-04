@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/home-styles.css"/>
+    <title>enRoute - Home</title>
+</head>
+<body>
+    <nav class="app-navbar">
+        <img alt="diantech-logo" src="../assets/brand-logo-hd.png" class="app-brand-logo">
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </nav>
+
+
+    <header class="app-header">
+        <img src="../assets/logo-hd.png" alt="enRoute Logo" class="app-logo" />
+        <p>by Diantech AI Solutions 2025</p>
+    </header>
+
+    <main>
+        <div class="route-finder-card">
+            <h2>GET STARTED</h2>
+            <form id="route-form">
+                <div class="form-group">
+                    <label for="from-location">From</label>
+                    <select id="from-location" name="from-location" required>
+                        <option value="" disabled selected>Select a Location</option>
+                        <option value="loc_a">Location A</option>
+                        <option value="loc_b">Location B</option>
+                        <option value="loc_c">Location C</option>
+                        <option value="loc_d">Another Location</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="to-location">To</label>
+                    <select id="to-location" name="to-location" required>
+                        <option value="" disabled selected>Select a Location</option>
+                        <option value="loc_a">Location A</option>
+                        <option value="loc_b">Location B</option>
+                        <option value="loc_c">Location C</option>
+                        <option value="loc_d">Another Location</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="find-route-button">Find Route</button>
+            </form>
+        </div>
+
+    </main>
+    <p class="contact-links">
+        More ways to know about us:
+        <b><a href="https://t.me/yourtelegram" target="_blank" rel="noopener noreferrer">Telegram</a></b> |
+        <b><a href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer">Facebook</a></b> |
+        <b><a href="mailto:youremail@example.com" target="_blank" rel="noopener noreferrer">Mail</a></b>
+      </p>
+      
+    <script type="module">
+        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDc0xklvS70P27qhExxxRQ7Wlg88rGeHlY",
+            authDomain: "enroute-web.firebaseapp.com",
+            projectId: "enroute-web",
+            storageBucket: "enroute-web.firebasestorage.app",
+            messagingSenderId: "571379862604",
+            appId: "1:571379862604:web:eae6de8ea99ec82fda78e9",
+            measurementId: "G-2FBHXPE3T0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            console.log("User is signed in:", user);
+            // You could potentially personalize the page here, e.g., display user.displayName
+          } else {
+            // User is signed out
+            console.log("User is signed out");
+            // Redirect back to login page if not authenticated
+            window.location.href = 'index.html'; // Assuming your login page is login.html
+          }
+        });
+
+
+        // --- Logout Function ---
+        window.logout = function() {
+            signOut(auth).then(() => {
+              // Sign-out successful.
+              console.log("Logout successful");
+              window.location.href = 'index.html'; // Redirect to login page after logout
+            }).catch((error) => {
+              // An error happened.
+              console.error("Logout Error:", error);
+              alert("Logout failed: " + error.message);
+            });
+        } 
+
+         // --- Placeholder for Find Route Button ---
+         const routeForm = document.getElementById('route-form');
+         if (routeForm) {
+             routeForm.addEventListener('submit', function(event) {
+                 event.preventDefault(); // Prevent default form submission
+                 const fromLocation = document.getElementById('from-location').value;
+                 const toLocation = document.getElementById('to-location').value;
+
+                 if (fromLocation && toLocation) {
+                     alert(`Finding route from ${fromLocation} to ${toLocation}`);
+                     // Add your actual route finding logic here
+                     // This might involve API calls or other calculations
+                     console.log(`Find Route: From ${fromLocation}, To ${toLocation}`);
+                 } else {
+                     alert("Please select both 'From' and 'To' locations.");
+                 }
+             });
+         }
+
+         /* --- Basic Logout Function (if not using Firebase on this page) ---
+         // This won't actually sign the user out of Firebase, only redirect
+         window.logout = function() {
+             console.log("Redirecting to login page...");
+             // Ideally, you should use Firebase signOut here if you initialized Firebase
+             window.location.href = 'index.html'; // Redirect to login page
+         }*/
+
+    </script>
+
+</body>
+</html>

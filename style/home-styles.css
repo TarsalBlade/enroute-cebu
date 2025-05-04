@@ -1,0 +1,191 @@
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter";
+  }
+
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+    padding: 10px 20px;
+  }
+
+  .app-header {
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 0px;
+  }
+
+  .app-navbar {
+    width: 100%;
+  }
+
+  .app-brand-logo {
+    margin-top: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    max-height: 3rem;
+    margin: 0;
+  }  
+
+  .app-logo {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    max-height: 4.5rem; /* Match original h1 size */
+  }  
+
+  .app-header p {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .route-finder-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
+    width: clamp(320px, 80%, 700px); /* Responsive width */
+    text-align: center;
+  }
+
+  .route-finder-card h2 {
+    font-size: 1.3rem;
+    font-weight: bolder;
+    margin-bottom: 30px;
+    color: #181818;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #495057;
+  }
+
+  .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #181818;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23343a40" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    cursor: pointer;
+  }
+
+  .find-route-button {
+    background-color: #242424;
+    color: #ffffff;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    transition: background-color 0.2s ease;
+  }
+
+  .find-route-button:hover {
+    background-color: #343a40;
+  }
+
+  .logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: firebrick;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .logout-button:hover {
+    background-color: #c82333;
+  }
+
+  .contact-links {
+    font-size: 0.9em;
+    color: #181818;
+    margin-top: 30px;
+    text-align: center;
+    padding: 0 10px;
+    word-wrap: break-word;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .contact-links b {
+    font-weight: 600;
+  }
+  
+  .contact-links a {
+    color: #181818;
+    text-decoration: none;
+  }
+  
+  .contact-links a:hover {
+    color: #181818;
+    text-decoration: none;
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .route-finder-card {
+      padding: 25px 20px;
+    }
+
+    .app-header h1 {
+      font-size: 2rem;
+    }
+
+    .route-finder-card h2 {
+      font-size: 1.4rem;
+    }
+
+    .contact-links {
+        font-size: 0.85em;
+        margin-top: 30px;
+        gap: 8px;
+      }
+  }
+

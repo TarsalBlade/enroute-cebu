@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>enRoute Login</title>
+  <style>
+    /* Basic Styling for Clarity - Adapt or use your styles.css */
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f4; }
+    .login-container { display: flex; background-color: white; box-shadow: 0 0 15px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; max-width: 800px; width: 90%; flex-wrap: wrap; /* Allow wrapping on smaller screens */ }
+    .left, .right { padding: 30px 40px; flex: 1; min-width: 300px; /* Minimum width before wrapping */ }
+    .left { background-color: #eee; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+    .right { display: flex; flex-direction: column; justify-content: center; }
+    h1 { margin-bottom: 5px; font-size: 2.2em; color: #333; }
+    h2 { margin-bottom: 20px; color: #333; font-size: 1.3em; text-align: center;}
+    .left p { margin-top: 0; color: #555; margin-bottom: 30px; }
+    .auth-button, .action-button, .guest-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      width: 100%;
+      font-size: 1em;
+      transition: background-color 0.2s;
+    }
+    .auth-button img { margin-right: 10px; height: 24px; width: 24px; }
+    .auth-button:hover, .action-button:hover, .guest-button:hover { background-color: #f0f0f0; }
+    .action-button { background-color: #007bff; color: white; border: none; }
+    .action-button:hover { background-color: #0056b3; }
+    .action-button:nth-of-type(2) { /* Style sign up button differently if needed */
+       background-color: #28a745;
+    }
+     .action-button:nth-of-type(2):hover {
+       background-color: #218838;
+    }
+    .guest-button { background-color: #6c757d; color: white; border: none; margin-top: 10px; }
+    .guest-button:hover { background-color: #5a6268; }
+    input[type="email"], input[type="password"], input[type="text"] {
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%; /* Use 100% width and rely on padding box-sizing */
+      box-sizing: border-box; /* Include padding and border in element's total width/height */
+    }
+    small { display: block; margin-top: 20px; font-size: 0.8em; color: #666; text-align: center; }
+    .error-message { color: red; font-size: 0.9em; margin-bottom: 10px; text-align: center; min-height: 1.2em; /* Prevent layout shift */ }
+    hr { margin: 20px 0; border: 0; border-top: 1px solid #eee; }
+
+    /* Responsive Adjustments */
+     @media (max-width: 768px) {
+        .login-container { flex-direction: column; }
+        .left, .right { min-width: unset; width: 100%; }
+        .left { border-bottom: 1px solid #ddd; } /* Add separator when stacked */
+     }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="left">
+    <h1>enRoute.</h1>
+    <p>by Diantech AI Solutions 2025</p>
+
+    <button class="auth-button" onclick="loginWithGoogle()">
+      <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"/>
+      Continue with Google
+    </button>
+
+    <small>Need help? Contact <a href="#">support</a>.</small>
+  </div>
+
+  <div class="right">
+    <h2>LOGIN OR SIGN UP</h2>
+    <div id="auth-error" class="error-message"></div> <input type="email" id="email" placeholder="Email" autocomplete="email" />
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+
+    <button class="action-button" onclick="signInWithEmailPassword()">Login</button>
+    <button class="action-button" onclick="signUpWithEmailPassword()">Sign Up</button>
+
+    <hr>
+
+    <h2>GUEST ACCESS</h2>
+    <input type="text" id="guestUsername" placeholder="Enter Guest Name" />
+    <button class="guest-button" onclick="signInAsGuest()">Continue as Guest</button>
+
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+  import {
+    getAuth,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword, // Added
+    signInWithEmailAndPassword    // Added
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  // --- Firebase Configuration ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyDc0xklvS70P27qhExxxRQ7Wlg88rGeHlY",
+  authDomain: "enroute-web.firebaseapp.com",
+  projectId: "enroute-web",
+  storageBucket: "enroute-web.firebasestorage.app",
+  messagingSenderId: "571379862604",
+  appId: "1:571379862604:web:eae6de8ea99ec82fda78e9",
+  measurementId: "G-2FBHXPE3T0"
+  };
+
+  // --- Initialize Firebase ---
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const authErrorElement = document.getElementById('auth-error');
+
+  // --- Helper to Display Errors ---
+  function displayAuthError(message) {
+      if (authErrorElement) {
+          authErrorElement.textContent = message;
+      } else {
+          alert(message); // Fallback
+      }
+  }
+  function clearAuthError() {
+      if (authErrorElement) {
+          authErrorElement.textContent = '';
+      }
+  }
+
+  // --- Google Login ---
+  window.loginWithGoogle = function () {
+    clearAuthError();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log("Google Login Successful:", user);
+        logEvent(analytics, 'login', { method: 'Google' });
+        // alert("Welcome, " + user.displayName); // Optional: show welcome message
+        window.location.href = 'home.html'; // Redirect on success
+      })
+      .catch((error) => {
+        console.error("Google Login Error:", error);
+        displayAuthError("Google login failed: " + error.message);
+        logEvent(analytics, 'login_failure', { method: 'Google', error_code: error.code, error_message: error.message });
+      });
+  };
+
+  // --- Email/Password Sign Up ---
+  window.signUpWithEmailPassword = function () {
+    clearAuthError();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      displayAuthError("Please enter both email and password to sign up.");
+      return;
+    }
+    if (password.length < 6) {
+       displayAuthError("Password should be at least 6 characters long.");
+       return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Sign Up Successful:", user);
+        logEvent(analytics, 'sign_up', { method: 'Email/Password' });
+        // alert("Account created successfully! Welcome!"); // Optional: show welcome message
+        window.location.href = 'home.html'; // Redirect on success
+      })
+      .catch((error) => {
+        console.error("Sign Up Error:", error);
+        let friendlyMessage = "Sign up failed. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+            friendlyMessage = "This email address is already in use. Try logging in instead.";
+        } else if (error.code === 'auth/invalid-email') {
+            friendlyMessage = "Please enter a valid email address.";
+        } else if (error.code === 'auth/weak-password') {
+            friendlyMessage = "Password is too weak. Please use a stronger password.";
+        } else {
+            friendlyMessage = `Sign up failed: ${error.message}`;
+        }
+        displayAuthError(friendlyMessage);
+        logEvent(analytics, 'sign_up_failure', { method: 'Email/Password', error_code: error.code, error_message: error.message });
+      });
+  };
+
+  // --- Email/Password Sign In ---
+  window.signInWithEmailPassword = function () {
+    clearAuthError();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      displayAuthError("Please enter both email and password to log in.");
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Login Successful:", user);
+        logEvent(analytics, 'login', { method: 'Email/Password' });
+        // alert("Welcome back!"); // Optional: show welcome message
+        window.location.href = 'home.html'; // Redirect on success
+      })
+      .catch((error) => {
+        console.error("Login Error:", error);
+         let friendlyMessage = "Login failed. Please try again.";
+         // Use 'auth/invalid-credential' for newer SDK versions catching both user-not-found and wrong-password
+         if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+             friendlyMessage = "Invalid email or password. Please check your details.";
+         } else if (error.code === 'auth/invalid-email') {
+             friendlyMessage = "Please enter a valid email address.";
+         } else {
+             friendlyMessaage = `Login failed: ${error.message}`;
+         }
+        displayAuthError(friendlyMessage);
+        logEvent(analytics, 'login_failure', { method: 'Email/Password', error_code: error.code, error_message: error.message });
+      });
+  };
+
+  // --- Guest Sign In (Local/Non-Firebase Auth) ---
+  window.signInAsGuest = function () {
+    clearAuthError();
+    const username = document.getElementById("guestUsername").value;
+
+    if (!username) {
+       displayAuthError("Please enter a guest name to continue.");
+       return;
+     }
+
+    console.log("Guest Login:", { username });
+    logEvent(analytics, 'guest_login', { guest_username: username });
+    // alert("Continuing as Guest: " + username); // Optional: show welcome message
+    // Note: This is NOT Firebase Anonymous Auth. It just proceeds.
+    window.location.href = 'home.html'; // Redirect on success
+  };
+
+</script>
+</body>
+</html>
